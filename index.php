@@ -62,7 +62,7 @@ $result = $conn->query($sql);
                           <td>{$row["name"]}</td>
                           <td>{$row["email"]}</td>
                           <td style='width: 10px;'>{$row["password"]}</td>
-                          <td ><img src='./image/users1188837104.png' style='height: 30px; width: 50px;' alt='{$row['image']}'></img></td>
+                          <td ><img src='./image/{$row["image"]}' style='height: 30px; width: 50px;' alt='{$row['image']}'></img></td>
                           <td>{$row["phone"]}</td>
                           <td>{$row["authorization"]}</td>
                           <td><button type='button' value='{$row['id']}' class='viewStudentBtn btn btn-info btn-sm'>View</button></td>
@@ -102,7 +102,7 @@ $result = $conn->query($sql);
                 form_data.append("image", image);
                 form_data.append("phone", phone);
                 form_data.append("authorization", authorization);
-                if (name !== "" && email !== "") {
+                if (name !== "" && email !== "" && password !== "" && phone !== "") {
                     $.ajax({
                         url: "./server/insert.php",
                         type: "POST",
@@ -111,9 +111,7 @@ $result = $conn->query($sql);
                         contentType: false,
                         processData: false,
                         data: form_data,
-
                         success: function (data) {
-                            // alert(data)
                             if (data === "successfully created") {
                                 $('#addUser').modal().hide();
                                 alert('Data updated successfully !');
@@ -127,36 +125,33 @@ $result = $conn->query($sql);
                 } else {
                     alert("cannot be blank")
                 }
-            })
+            });
 
-
-
-
-            $(document).on('click', '.edit', function () {
+            $("body").on("click", ".edit", function (event) {
+                event.preventDefault();
+                current_row = $(this).closest("tr");
                 $("#editUser").modal();
-                let id = $(this).closest("tr").find("td:eq(0)").text();
-                let name = $(this).closest("tr").find("td:eq(1)").text();
-                let email = $(this).closest("tr").find("td:eq(2)").text();
-                let password = $(this).closest("tr").find("td:eq(3)").text();
-                let image = $(this).closest("tr").find("td:eq(4)").text();
-                let phone = $(this).closest("tr").find("td:eq(5)").text();
-                let authorization = $(this).closest("tr").find("td:eq(6)").text();
+                var id = $(this).closest("tr").attr("id_u");
+                var id = $(this).closest("tr").find("td:eq(0)").text();
+                var name = $(this).closest("tr").find("td:eq(1)").text();
+                var email = $(this).closest("tr").find("td:eq(2)").text();
+                var password = $(this).closest("tr").find("td:eq(3)").text();
+                var image = $(this).closest("tr").find("td:eq(4)").text();
+                var phone = $(this).closest("tr").find("td:eq(5)").text();
+                var authorization = $(this).closest("tr").find("td:eq(6)").text();
                 $("#id").val(id);
                 $("#name1").val(name);
                 $("#email1").val(email);
                 $("#password1").val(password);
-                $("#image1").val(image);
                 $("#phone1").val(phone);
+                $("#image1").val(image);
                 $("#authorization1").val(authorization);
             });
-
-
-
-
-            $("#editUser").click(function () {
-                var id = $("#id").val(id);
+            $("#update").click(function () {
+                var id = $('#id').val();
                 var name = $('#name1').val();
                 var email = $('#email1').val();
+                var password = $('#password1').val();
                 var phone = $('#phone1').val();
                 var image = $('#image1').prop('files')[0];
                 var authorization = $('#authorization1').val();
@@ -167,27 +162,33 @@ $result = $conn->query($sql);
                 form_data.append("image1", image);
                 form_data.append("phone1", phone);
                 form_data.append("authorization1", authorization);
-                $.ajax({
-                    url: "./server/edit.php",
-                    type: "POST",
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    data: form_data,
-                    success: function (data) {
-                        console.log(data)
-                        if (data === "update") {
-                            alert(data)
+                console.log(image)
+                if (image !== "") {
+                    $.ajax({
+                        url: "./server/edit.php",
+                        type: "POST",
+                        dataType: 'script',
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: form_data,
+                        success: function (data) {
+                            if (data === "Successfully") {
+                                alert("Successfully")
+                                $('#editUser').modal().hide();
+                                location.reload();
+                            } else {
+                                alert("cannot")
+                                $('#editUser').modal().hide();
+                                location.reload();
+                            }
+
                         }
-                        if (data === "not update") {
-                            alert(data)
-                        }
-                    }
-                });
-            })
-
-
-
+                    });
+                } else {
+                    alert("cannot be blank")
+                }
+            });
 
             // Delete
             $(document).on('click', '.delete', function () {
