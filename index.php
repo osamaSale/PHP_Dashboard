@@ -59,7 +59,7 @@
 </body>
 
 </html>
-<?php include('./Form/view.php')?>
+<?php include('./Form/view.php') ?>
 <div id="userModal" class="modal fade">
     <div class="modal-dialog">
         <form method="post" id="user_form" enctype="multipart/form-data">
@@ -189,7 +189,7 @@
         });
 
         $(document).on('click', '.delete', function () {
-            
+
             var user_id = $(this).attr("id");
             if (confirm("Are you sure you want to delete this?")) {
                 $.ajax({
@@ -206,21 +206,13 @@
                 return false;
             }
         });
-  
+
 
 
     });
-    $(document).on('click', '.view', function () {
-            var user_id = $(this).attr("id");
-            $.ajax({
-                    url: "./server/fetch_single.php",
-                    method: "POST",
-                    data: { user_id: user_id },
-                    success: function (data) {
-                        //alert(data);
-                        $('#viewModal').modal('show');
-                    }
-                }); 
-        });
+
+    $("#view").click(function () {
+        $("#viewModal").modal('show');
+    })
 
 </script>
