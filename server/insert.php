@@ -1,43 +1,61 @@
 <?php
-include("connection.php");
-
-
-function upload_image()
-{
-    if (isset($_FILES["image"])) {
-        $extension = explode('.', $_FILES['image']['name']);
-        $new_name = rand() . '.' . $extension[1];
-        $destination = './image/' . $new_name;
-        move_uploaded_file($_FILES['image']['tmp_name'], $destination);
-        return $new_name;
+include('db.php');
+include('function.php');
+if (isset($_POST["operation"])) {
+  if ($_POST["operation"] == "Add") {
+    $image = '';
+    if ($_FILES["image"]["name"] != '') {
+      $image = upload_image();
     }
-}
-$name = $_POST['name'];
-$email = $_POST['email'];
-$password = $_POST['password'];
-$phone = $_POST['phone'];
-$image = upload_image();
-$authorization = $_POST['authorization'];
-$options = ["cost" => 15];
-$hash = password_hash($password, PASSWORD_BCRYPT, $options);
-
-$sql1 = "select * from users where email='$email'";
-
-$duplicate = mysqli_query($conn, $sql1);
-
-
-if (mysqli_num_rows($duplicate) > 0) {
-    echo "Email ID already exists";
-} else {
-    $sql = "INSERT INTO users
-    (name, email ,password ,image ,phone ,authorization) 
-    VALUES('$name', '$email' ,'$hash', '$image' ,'$phone' , '$authorization')";
-    $result = mysqli_query($conn, $sql);
-    if ($result) {
-        echo ("successfully created");
+    $password = 'my secret password';
+    $hash = password_hash($password, PASSWORD_DEFAULT);
+    $statement = $connection->prepare("
+   INSERT INTO users (name, email,password ,phone,authorization, image) 
+   VALUES (:name, :email,:password,:phone , :authorization , :image)
+  ");
+    $result = $statement->execute(
+      array(
+        ':name' => $_POST["name"],
+        ':email' => $_POST["email"],
+       ':password' => $hash,
+        ':phone' => $_POST["phone"],
+        ':authorization' => $_POST["authorization"],
+        ':image' => $image
+      )
+    );
+    if (!empty($result)) {
+      echo 'Data Inserted';
+    }
+  }
+  if ($_POST["operation"] == "Edit") {
+    $image = '';
+    if ($_FILES["image"]["name"] != '') {
+      $image = upload_image();
     } else {
-        echo ("unknown error occurred");
+      $image = $_POST["hidden_user_image"];
     }
+    $statement = $connection->prepare(
+      "UPDATE users 
+   SET name = :name, email = :email,password = :password , phone = :phone , authorization = :authorization, image = :image  
+   WHERE id = :id
+   "
+    );
+    $result = $statement->execute(
+      array(
+        ':name' => $_POST["name"],
+        ':email' => $_POST["email"],
+        ':password' => $_POST["password"],
+        ':phone' => $_POST["phone"],
+        ':authorization' => $_POST["authorization"],
+        ':image' => $image,
+        ':id' => $_POST["user_id"]
+      )
+
+    );
+    if (!empty($result)) {
+      echo 'Data Updated';
+    }
+  }
 }
 
-
+?>
