@@ -1,30 +1,27 @@
 <?php
+include("connection.php");
 
-include('db.php');
-include("function.php");
+$id = $_GET['id'];
+$image = $_GET['image'];
+$sql = "DELETE FROM  `users` WHERE `id`  =  $id ";
 
-if(isset($_POST["user_id"]))
-{
- $image = get_image_name($_POST["user_id"]);
- if($image != '')
- {
-  unlink("../image/users/" . $image);
- }
- $statement = $connection->prepare(
-  "DELETE FROM users WHERE id = :id"
- );
- $result = $statement->execute(
-  array(
-   ':id' => $_POST["user_id"]
-  )
- );
- 
- if(!empty($result))
- {
-  echo 'Data Deleted';
- }
+if (mysqli_query($conn, $sql)) {
+
+    if ($image != '') {
+        unlink("../image/users/" . $image);
+    }
+    $response = [
+        'status' => 'ok',
+        'success' => true,
+        'message' => 'Record deleted succesfully!'
+    ];
+    print_r(json_encode($response));
+} else {
+    $response = [
+        'status' => 'ok',
+        'success' => false,
+        'message' => 'Record deleted failed!'
+    ];
+    print_r(json_encode($response));
 }
-
-
-
 ?>

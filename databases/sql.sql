@@ -1,10 +1,9 @@
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(150) NOT NULL,
-  `email` varchar(150) NOT NULL,
-  `password` varchar(150) NOT NULL,
-   `phone` varchar(150) NOT NULL,
-    `authorization` varchar(150) NOT NULL,
-  `image` varchar(150) NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE users (
+id INT AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(30) NOT NULL,
+email VARCHAR(30) NOT NULL unique,
+password VARCHAR(255),
+image varchar(255),
+phone varchar(255),
+authorization varchar(255)
 )
