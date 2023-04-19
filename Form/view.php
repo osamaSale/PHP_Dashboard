@@ -6,6 +6,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body view_employee">
+               
                 <div class="form-group">
                     <label>Name</label>
                     <input type="text" id="name_input1" class="form-control" readonly>

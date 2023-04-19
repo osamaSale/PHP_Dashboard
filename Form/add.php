@@ -31,14 +31,15 @@
                     </select>
                 </div>
                 <div class="form-group">
-                        <label>Image</label>
-                        <input type="file" id="image_input" name="image" class="form-control">
-                        <span id="user_uploaded_image"></span>
-                    </div>
+                    <label>Image</label>
+                    <input type="file" id="image_input" name="image" class="form-control">
+                    <span id="user_uploaded_image"></span>
+                </div>
             </div>
             <div class="modal-footer">
                 <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                <input type="submit" class="btn btn-success" value="Add" onclick="addEmployee()">
+               <!--  <input type="submit" class="btn btn-success" value="Add" onclick="addEmployee()"> -->
+                <button type="submit" id="btnFetch" class="spinner-button btn btn-primary mb-2"  onclick="addEmployee()">Add</button>
             </div>
         </div>
     </div>
