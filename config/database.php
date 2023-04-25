@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "0000";
-$dbname = "crud";
+$dbname = "PHP";
 
 
 // Create connection
