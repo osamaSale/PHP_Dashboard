@@ -11,11 +11,11 @@ $requestMethod = $_SERVER["REQUEST_METHOD"];
 if ($requestMethod === "DELETE") {
     $deleteUser = deleteUser($_GET);
     echo $deleteUser;
-}/*  else {
+} else {
     $data = [
-        "status" => 405,
+        "status" => 203,
         "massage" => $requestMethod . 'Method Not Allowed'
     ];
-    header("HTTP/1.0 405 Method Not Allowed");
+    header("HTTP/1.0 203 Method Not Allowed");
     echo json_encode($data);
-} */
+}
