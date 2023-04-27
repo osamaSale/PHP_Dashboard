@@ -1,4 +1,5 @@
 <?php 
+error_reporting(0);
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
@@ -18,9 +19,9 @@ if ($requestMethod === "POST") {
      echo $user;
 } else {
     $data = [
-        "status" => 405,
+        "status" => 206,
         "massage" => $requestMethod . 'Method Not Allowed'
     ];
-    header("HTTP/1.0 405 Method Not Allowed");
+    header("HTTP/1.0 206 Method Not Allowed");
     echo json_encode($data);
 }

@@ -188,11 +188,8 @@ function editUser($user, $UserParams)
     $id = mysqli_real_escape_string($conn, $UserParams['id']);
     $name = mysqli_real_escape_string($conn, $user['name']);
     $email = mysqli_real_escape_string($conn, $user['email']);
-    $password = mysqli_real_escape_string($conn, $user['password']);
     $phone = mysqli_real_escape_string($conn, $user['phone']);
     $authorization = mysqli_real_escape_string($conn, $user['authorization']);
-    $options = ["cost" => 15];
-    $hash = password_hash($password, PASSWORD_BCRYPT, $options);
     $fileImage = $_FILES['fileImage']["name"];
 
 
@@ -200,9 +197,7 @@ function editUser($user, $UserParams)
         return error422('Enter your name');
     } elseif (empty(trim($email))) {
         return error422('Enter your email');
-    } elseif (empty(trim($password))) {
-        return error422('Enter your Password');
-    } elseif (empty(trim($phone))) {
+    }  elseif (empty(trim($phone))) {
         return error422('Enter your Phone');
     } elseif (empty(trim($authorization))) {
         return error422('Enter your User and Admin');
@@ -226,7 +221,7 @@ function editUser($user, $UserParams)
                     $image = $res['image'];
                     $cloudinary_id = $res['cloudinary_id'];
                 }
-                $query1 = "update users SET name='$name',email='$email',password='$hash',image ='$image',fileImage='$fileImage',phone='$phone',authorization='$authorization', cloudinary_id = '$cloudinary_id' where id ='$id'";
+                $query1 = "update users SET name='$name',email='$email',image ='$image',fileImage='$fileImage',phone='$phone',authorization='$authorization', cloudinary_id = '$cloudinary_id' where id ='$id'";
                 $result1 = mysqli_query($conn,  $query1);
                 if ($result1) {
 
